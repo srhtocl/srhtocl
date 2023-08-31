@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import React, { useEffect } from "react";
 import { Header } from "../components/header";
 import { Footer } from "../components/footer";
@@ -12,24 +12,27 @@ export default function Layout() {
 
 	const authContext = useAuth();
 
+	const location = useLocation();
+
 	useEffect(() => {
 
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			
+
 			user ? authContext.setUser(user) : authContext.setUser(null);
-		
+
 		});
-		
+
 		return () => unsubscribe();
 
 	},);
 
+
 	return (
 		<React.Fragment>
+			
+			<Header />
 
-			{authContext.user && <Header/>}
-
-			<main className="flex container h-full overflow-auto justify-center">
+			<main id="main" className="sr-layout my-14">
 				<Outlet />
 			</main>
 

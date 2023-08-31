@@ -121,7 +121,7 @@ async function getDocumentsByUsername(user) {
 
         querySnapshot.forEach((doc) => { documents.push(doc); });
 
-        if (documents.length === 0) throw new Error("user not found");
+        if (documents.length === 0) throw new Error("user not foundddd");
 
         return documents[0];
 

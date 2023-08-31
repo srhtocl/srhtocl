@@ -1,87 +1,76 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import MessageField from "../components/message-field";
-import { getDocumentsByUsername, insertDocument, setDocument } from "../services/db-methods";
+import { getDocumentsByUsername, setDocument } from "../services/db-methods";
+import { FiSend } from "react-icons/fi";
+import { useAuth } from "../context/auth-context";
 
-export default function Response(props) {
+function Response() {
 
+    const navigate = useNavigate();
+    
     const [draft, setDraft] = useState("");
+    
     const [messages, setMessages] = useState([]);
+    
     const [user, setUser] = useState((new Date()).getTime().toString(16));
-
+    
     const { userid } = useParams();
+
+    const authContext = useAuth();
 
     useEffect(() => {
 
+        if (!authContext.user) { navigate("/"); }
+
+        Cookies.set('user', userid, { expires: 7 });
+
+        setUser(Cookies.get('user'));
+        
         (async () => {
 
-            setUser(userid);
+            const resDoc = await getDocumentsByUsername(Cookies.get('user'));
 
-            Cookies.set('user', userid, { expires: 7 })
+            const resData = resDoc.data();
 
-            if (!Cookies.get('user')) {
-
-                Cookies.set('user', user, { expires: 7 })
-
-                await insertDocument({ user: user, messages: messages })
-
-            } else {
-
-                setUser(Cookies.get('user'));
-
-                await getDocumentsByUsername(Cookies.get('user'))
-
-                    .then((resDoc) => {
-
-                        setUser(resDoc.data().user);
-
-                        setMessages([...resDoc.data().messages]);
-
-                    })
-
-            }
+            setMessages([...resData.messages]);
+        
         })();
+    
+    }, []);
 
-    }, [messages, user, userid]);
-
-
-    const handleChange = (event) => { setDraft(event.target.value); }
+    const handleChange = (event) => {
+        setDraft(event.target.value);
+    };
 
     const handleSubmit = async (event) => {
-
+        
         event.preventDefault();
 
         if (draft !== "") {
-
-            messages.push({ user: "admin", time: (new Date()).getTime(), data: draft });
-
+            
+            const updatedMessages = [...messages, { user: "admin", time: (new Date()).getTime(), data: draft } ];
+            
             setDraft("");
-
-            await setDocument(user, { user: user, messages: messages });
+            
+            setMessages(updatedMessages);
+            
+            await setDocument(user, { user: user, messages: updatedMessages });
         }
-    }
+    };
 
     return (
-
-        <div className="form-card">
-
+        <div className="sr-layout">
             <MessageField messages={messages} />
-
-            <form id="visitor" onSubmit={handleSubmit}>
-
-                <input type="text" value={draft} placeholder="Birşeyler yaz ve gönder..." onChange={handleChange} ></input>
-
-                <div id="send-button" className="fas fa-paper-plane" onClick={handleSubmit}></div>
-
+            <form id="visitor" className="border-2" onSubmit={handleSubmit}>
+                <input type="text" value={draft} placeholder="Birşeyler yaz ve gönder..." onChange={handleChange} />
+                <div id="send-button" className="border-l-2 icon" onClick={handleSubmit}>
+                    <FiSend size={24} />
+                </div>
             </form>
-
         </div>
-
     );
-
-
-
-
-
 }
+
+export default Response;

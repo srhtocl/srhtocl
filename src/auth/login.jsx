@@ -37,16 +37,15 @@ export default function Login() {
     }
 
     return (
-        <div className="h-full flex items-center justify-center">
-            <div className="max-w-md w-full px-6 py-8 bg-white shadow-lg rounded-lg">
-                <h1 className="text-3xl font-semibold mb-6">Giriş Yap</h1>
+        <div className="sr-layout p-4 items-center justify-center">
+            <div className="max-w-md w-full px-6 py-8 bg-white rounded-lg ">
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <input
                             type="email"
                             id="email"
                             placeholder="Email"
-                            className="mt-1 px-4 py-2 w-full border rounded-lg focus:ring focus:ring-blue-200"
+                            className="mt-1 px-4 py-2 w-full border rounded-lg"
                             onChange={handleEmailChange}
                         />
                     </div>
@@ -55,12 +54,12 @@ export default function Login() {
                             type="password"
                             id="password"
                             placeholder="Password"
-                            className="mt-1 px-4 py-2 w-full border rounded-lg focus:ring focus:ring-blue-200"
+                            className="mt-1 px-4 py-2 w-full border rounded-lg"
                             onChange={handlePasswordChange}
                         />
                     </div>
                     <div className="mb-4">
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">Sign In</button>
+                        <button type="submit" className="bg-blue-500 w-full text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">giriş yap</button>
                     </div>
                 </form>
             </div>

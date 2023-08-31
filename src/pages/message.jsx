@@ -2,6 +2,7 @@ import React from "react";
 import Cookies from "js-cookie";
 import MessageField from "../components/message-field";
 import { getDocumentsByUsername, insertDocument, setDocument } from "../services/db-methods";
+import {FiSend} from "react-icons/fi";
 
 export default class Message extends React.Component {
 
@@ -80,11 +81,11 @@ export default class Message extends React.Component {
 
     render() {
         return (
-            <div className="form-card">
+            <div className="sr-layout">
                 <MessageField messages={this.state.messages} />
-                <form id="visitor" onSubmit={this.handleSubmit}>
+                <form id="visitor" className="border-2 border-gray-600" onSubmit={this.handleSubmit}>
                     <input type="text" value={this.state.draft} placeholder="Birşeyler yaz ve gönder..." onChange={this.handleChange} ></input>
-                    <div id="send-button" className="fas fa-paper-plane" onClick={this.handleSubmit}></div>
+                    <div id="send-button" className="border-l-2 icon border-gray-600" onClick={this.handleSubmit}><FiSend size={24} /></div>
                 </form>
             </div>
         );

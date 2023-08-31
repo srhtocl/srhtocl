@@ -27,6 +27,9 @@ const auth = getAuth(app);
 // Get a reference to the message collection
 const collectionRef = collection(db, "srhtocl");
 
+// Get a reference to the message collection
+const postCollectionRef = collection(db, "post");
+
 export {
 
 	app, // firebase app
@@ -36,5 +39,7 @@ export {
 	db, // firestore database
 
 	collectionRef, // message collection references
+
+	postCollectionRef // post collection references
 
 };
